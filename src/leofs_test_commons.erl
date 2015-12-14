@@ -357,32 +357,25 @@ check_redundancies_2(Key) ->
 
 
 %% @private
-compare_1(Key, L1, L2) ->
+compare_1(Key, {L1_Node, Metadata_1}, {L2_Node, Metadata_2}) ->
     %% node-name
-    case (element(1, L1) /= element(1, L2)) of
+    case (L1_Node /= L2_Node) of
         true ->
-            ok;
-        false ->
-            io:format("[ERROR] ~s, ~p, ~p~n", [Key, L1, L2])
-    end,
-    compare_2(2, Key, L1, L2).
-
-compare_2(9,_Key,_L1,_L2) ->
-    ok;
-compare_2(Index, Key, L1, L2) ->
-    case (erlang:size(L1) >= Index andalso
-          erlang:size(L2) >= Index) of
-        true ->
-            case (element(Index, L1) == element(Index, L2)) of
+            case (leo_misc:get_value('addr_id', Metadata_1) == leo_misc:get_value('addr_id', Metadata_2) andalso
+                  leo_misc:get_value('checksum', Metadata_1) == leo_misc:get_value('checksum', Metadata_2) andalso
+                  leo_misc:get_value('redundancy_method', Metadata_1) == leo_misc:get_value('redundancy_method', Metadata_2) andalso
+                  leo_misc:get_value('clock', Metadata_1) == leo_misc:get_value('clock', Metadata_2) andalso
+                  leo_misc:get_value('del', Metadata_1) == leo_misc:get_value('del', Metadata_2)) of
                 true ->
                     ok;
                 false ->
-                    io:format("[ERROR] ~s, ~p, ~p~n", [Key, L1, L2])
+                    io:format("[ERROR] ~w - ~s, ~p, ~p~n",
+                              [?LINE, Key, Metadata_1, Metadata_2])
             end;
         false ->
-            io:format("[ERROR] ~s, ~p, ~p~n", [Key, L1, L2])
-    end,
-    compare_2(Index + 1, Key, L1, L2).
+            io:format("[ERROR] ~w - ~s, ~p, ~p~n",
+                      [?LINE, Key, Metadata_1, Metadata_2])
+    end.
 
 
 %% @doc Attach the node
