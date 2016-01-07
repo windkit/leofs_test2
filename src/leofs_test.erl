@@ -147,10 +147,10 @@ version() ->
 %% @doc Parse getopt options
 parse_args(RawArgs) ->
     OptSpecList = option_spec_list(),
-        case getopt:parse(OptSpecList, RawArgs) of
+    case getopt:parse(OptSpecList, RawArgs) of
         {ok, Args} ->
-                Args;
-            {error, {_Reason, _Data}} ->
-                help(),
-                halt(1)
-        end.
+            Args;
+        {error, {_Reason, _Data}} ->
+            help(),
+            halt(1)
+    end.
