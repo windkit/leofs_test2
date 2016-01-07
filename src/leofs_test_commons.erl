@@ -147,12 +147,12 @@ rnd_key(NumOfKeys) ->
 %% @doc Make partion of processing units
 %% private
 partitions(Index, MaxKeys, Acc) ->
-    Start = (Index - 1) * ?UNIT_OF_PARTION + 1,
+    Start = (Index - 1) * ?UNIT_OF_PARTITION + 1,
     case Start > MaxKeys of
         true ->
             Acc;
         false ->
-            End = (Index - 1) * ?UNIT_OF_PARTION + ?UNIT_OF_PARTION,
+            End = (Index - 1) * ?UNIT_OF_PARTITION + ?UNIT_OF_PARTITION,
             case (End > MaxKeys) of
                 true  ->
                     [{Start, MaxKeys}|Acc];
@@ -197,7 +197,7 @@ loop(Ref, NumOfPartitions) ->
 
 %% @doc Put objects
 %% @private
-put_object(Conf, Keys) when Keys > ?UNIT_OF_PARTION ->
+put_object(Conf, Keys) when Keys > ?UNIT_OF_PARTITION ->
     do_concurrent_exec(Conf, Keys, fun put_object_1/5);
 put_object(Conf, Keys) ->
     put_object_1(Conf, undefined, undefined, 1, Keys).
@@ -247,7 +247,7 @@ put_object_1(Conf, From, Ref, Start, End) ->
 get_object(_Conf, 0,_ExpectedCode) ->
     ?msg_progress_finished(),
     ok;
-get_object(Conf, Keys, 200) when Keys > ?UNIT_OF_PARTION ->
+get_object(Conf, Keys, 200) when Keys > ?UNIT_OF_PARTITION ->
     do_concurrent_exec(Conf, Keys, fun get_object_1/5);
 get_object(Conf, Keys, 200) ->
     get_object_1(Conf, undefined, undefined, 1, Keys);
@@ -321,7 +321,7 @@ del_object_1(Conf, Index, Key, Keys) ->
 
 %% @doc Check replicated objects
 %% @private
-check_redundancies(Conf, Keys) when Keys > ?UNIT_OF_PARTION ->
+check_redundancies(Conf, Keys) when Keys > ?UNIT_OF_PARTITION ->
     do_concurrent_exec(Conf, Keys, fun check_redundancies_1/5);
 check_redundancies(Conf, Keys) ->
     check_redundancies_1(Conf, undefined, undefined, 1, Keys).

@@ -39,7 +39,7 @@
 -define(COOKIE, "401321b4").
 -define(NUM_OF_REPLICAS, 2).
 -define(NUM_OF_KEYS,    10000).
--define(UNIT_OF_PARTION, 1000).
+-define(UNIT_OF_PARTITION, 1000).
 -define(THRESHOLD_ERROR_TIMES, 3).
 -define(DEF_TIMEOUT, timer:seconds(300)).
 
